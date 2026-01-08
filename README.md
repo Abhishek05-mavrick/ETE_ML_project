@@ -1,1 +1,1 @@
-thisis the end to end ml project
+this is the end to end ml project
