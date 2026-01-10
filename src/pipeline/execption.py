@@ -1,5 +1,5 @@
 import sys
-from logger import logger
+from .logger import logger
 
 def error_details(error,error_detail:sys):
     _,_,exc_tb = error_detail.exc_info()
@@ -23,5 +23,4 @@ if __name__ == "__main__":
         a=1/0
     except Exception as e:
         raise customException(sys,e)
-    logger.error(exec_info=True)
         
