@@ -1,12 +1,14 @@
-from sklearn.model_selection import train_test_split
 import os
 import sys
+# ensure project root is on sys.path so `src` package imports work when running this script directly
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from sklearn.model_selection import train_test_split
 from  src.pipeline.execption import customException
 from  src.pipeline.logger import logger
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass
-
+from src.componets.data_transformation import DataTransformationconfig,DataTransform
 
 @dataclass
 class DataIngestionConfig:
@@ -44,4 +46,8 @@ class DataIngection():
 
 if __name__=="__main__":
     obj=DataIngection()
-    obj.initiate()
+    train_data,test_data=obj.initiate()
+
+    data_transformation=DataTransform()
+    data_transformation.init_transformation(train_data,test_data)
+
