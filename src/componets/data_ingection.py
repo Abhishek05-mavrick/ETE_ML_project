@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 from dataclasses import dataclass
 from src.componets.data_transformation import DataTransformationconfig,DataTransform
+from src.componets.model_trainer import modelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -49,5 +50,8 @@ if __name__=="__main__":
     train_data,test_data=obj.initiate()
 
     data_transformation=DataTransform()
-    data_transformation.init_transformation(train_data,test_data)
+    train_array,test_array,preprocessor_path=data_transformation.init_transformation(train_data,test_data)
+
+    model_trainer=modelTrainer()
+    print(model_trainer.init_model_train(train_array,test_array))
 
