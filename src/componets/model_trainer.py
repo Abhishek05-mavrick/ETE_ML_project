@@ -43,29 +43,30 @@ class modelTrainer():
                 "catboost":CatBoostRegressor()
 
             }
-            # call evaluvate_models with correct parameter names
-            model_report:dict = evaluvate_models(X_train=x_train, y_train=y_train, X_test=x_test, y_test=y_test, models=models)
+            # keep things simple: no hyperparameter search; use default parameters
 
-            best_model_Score=max(sorted(model_report.values()))
+            # call evaluvate_models which returns simple scalar R2 scores
+            model_report: dict = evaluvate_models(X_train=x_train, y_train=y_train, X_test=x_test, y_test=y_test, models=models)
 
-            best_model_name=list(model_report.keys())[ 
-                list(model_report.values()).index(best_model_Score)]
-            best_model=models[best_model_name]
+            # pick the best model by R2 score (simple and readable)
+            best_model_name = max(model_report, key=model_report.get)
+            best_model_score = model_report[best_model_name]
+            best_model = models[best_model_name]
 
-            if best_model_Score<0.6:
-                raise customException("no best model found",sys)
-                
-            logger.info(f"best model found {best_model_name} with score {best_model_Score}")
+            if best_model_score < 0.6:
+                raise customException("no best model found", sys)
+
+            logger.info(f"best model found {best_model_name} with score {best_model_score}")
 
             save_obj(
                 file_path=self.model_trainer_config.train_model_path,
                 obj=best_model
             )
 
-            # return best model info
+            # return a simple result dict
             return {
                 "best_model_name": best_model_name,
-                "best_model_score": float(best_model_Score)
+                "best_model_score": float(best_model_score)
             }
 
 
